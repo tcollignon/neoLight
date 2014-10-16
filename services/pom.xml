@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.neo</groupId>
+	<artifactId>neo-services</artifactId>
+	<packaging>jar</packaging>
+
+	<parent>
+		<groupId>com.neo</groupId>
+		<artifactId>neo</artifactId>
+		<version>0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<name>neo REST web services</name>
+
+	<properties>
+		<swaggerGeneratedContentLocation>${basedir}/../web/src/main/webapp/swagger/generated</swaggerGeneratedContentLocation>
+		<swaggerMavenPluginVersion>2.2</swaggerMavenPluginVersion>
+		<serverHostname>localhost</serverHostname>
+		<serverPort>8080</serverPort>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.kongchen</groupId>
+				<artifactId>swagger-maven-plugin</artifactId>
+				<version>${swaggerMavenPluginVersion}</version>
+				<configuration>
+					<apiSources>
+						<apiSource>
+							<locations>com.neo.rest</locations>
+							<apiVersion>v1</apiVersion>
+							<basePath>http://${serverHostname}:${serverPort}/neo-web-${project.version}</basePath>
+							<outputTemplate>${project.build.resources[0].directory}/markdown.swagger.mustache</outputTemplate>
+							<outputPath>${swaggerGeneratedContentLocation}/strapdown.html</outputPath>
+							<swaggerDirectory>${swaggerGeneratedContentLocation}/apidocs</swaggerDirectory>
+						</apiSource>
+					</apiSources>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.wordnik</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>1.3.7</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.3.5.Final</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.3.5.Final</version>
+		</dependency>
+	</dependencies>
+</project>
